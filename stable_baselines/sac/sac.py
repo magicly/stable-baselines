@@ -10,7 +10,7 @@ from stable_baselines.common import tf_util, OffPolicyRLModel, SetVerbosity, Ten
 from stable_baselines.common.vec_env import VecEnv
 from stable_baselines.common.math_util import safe_mean, unscale_action, scale_action
 from stable_baselines.common.schedules import get_schedule_fn
-from stable_baselines.common.replay_buffer import ReplayBuffer
+from stable_baselines.common.buffers import ReplayBuffer
 from stable_baselines.sac.policies import SACPolicy
 from stable_baselines import logger
 
