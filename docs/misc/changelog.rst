@@ -62,6 +62,7 @@ Documentation:
 ^^^^^^^^^^^^^^
 - Add dedicated page for callbacks
 - Fixed example for creating a GIF (@KuKuXia)
+- Change Colab links in the README to point to the notebooks repo 
 
 
 Release 2.9.0 (2019-12-20)
