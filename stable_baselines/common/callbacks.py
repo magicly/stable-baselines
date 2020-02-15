@@ -24,7 +24,7 @@ class BaseCallback(ABC):
     def __init__(self, verbose: int = 0):
         super(BaseCallback, self).__init__()
         # The RL model
-        self.model = None  # type: BaseRLModel
+        self.model = None  # type: Optional[BaseRLModel]
         # An alias for self.model.get_env(), the environment used for training
         self.training_env = None  # type: Union[gym.Env, VecEnv, None]
         # Number of time the callback was called
@@ -32,9 +32,9 @@ class BaseCallback(ABC):
         # n_envs * n times env.step() was called
         self.num_timesteps = 0  # type: int
         self.verbose = verbose
-        self.locals = None  # type: Dict[str, Any]
-        self.globals = None  # type: Dict[str, Any]
-        self.logger = None  # type: logger.Logger
+        self.locals = None  # type: Optional[Dict[str, Any]]
+        self.globals = None  # type: Optional[Dict[str, Any]]
+        self.logger = None  # type: Optional[logger.Logger]
         # Sometimes, for event callback, it is useful
         # to have access to the parent object
         self.parent = None  # type: Optional[BaseCallback]
@@ -162,9 +162,6 @@ class CallbackList(BaseCallback):
     def _on_step(self) -> bool:
         continue_training = True
         for callback in self.callbacks:
-            # # Update variables
-            # callback.num_timesteps = self.num_timesteps
-            # callback.n_calls = self.n_calls
             # Return False (stop training) if at least one callback returns False
             continue_training = callback.on_step() and continue_training
         return continue_training
