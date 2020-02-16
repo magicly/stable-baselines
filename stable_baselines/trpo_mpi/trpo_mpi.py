@@ -98,7 +98,6 @@ class TRPO(ActorCriticRLModel):
         self.initial_state = None
         self.params = None
         self.summary = None
-        self.episode_reward = None
 
         if _init_setup_model:
             self.setup_model()
@@ -288,7 +287,6 @@ class TRPO(ActorCriticRLModel):
                 t_start = time.time()
                 len_buffer = deque(maxlen=40)  # rolling buffer for episode lengths
                 reward_buffer = deque(maxlen=40)  # rolling buffer for episode rewards
-                self.episode_reward = np.zeros((self.n_envs,))
 
                 true_reward_buffer = None
                 if self.using_gail:
