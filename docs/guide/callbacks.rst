@@ -11,8 +11,8 @@ It allows one to do monitoring, auto saving, model manipulation, progress bars, 
 Custom Callback
 ---------------
 
-To build a custom callback, you need to create a class that derives from `BaseCallback`.
-This will give you access to events (`_on_training_start`, `_on_step`) and useful variables (like `self.model` for the RL model).
+To build a custom callback, you need to create a class that derives from ``BaseCallback``.
+This will give you access to events (``_on_training_start``, ``_on_step``) and useful variables (like `self.model` for the RL model).
 
 
 You can find two examples of custom callbacks in the documentation: one for saving the best model according to the training reward (see :ref:`Examples <examples>`), and one for logging additional values with Tensorboard (see :ref:`Tensorboard section <tensorboard>`).
@@ -25,7 +25,7 @@ You can find two examples of custom callbacks in the documentation: one for savi
 
     class CustomCallback(BaseCallback):
         """
-        A custom callback that derives from `BaseCallback`.
+        A custom callback that derives from ``BaseCallback``.
 
         :param verbose: (int) Verbosity level 0: not output 1: info 2: debug
         """
@@ -67,7 +67,7 @@ You can find two examples of custom callbacks in the documentation: one for savi
             """
             This method will be called by the model.
             This is the equivalent to the callback function.
-            `locals()` and `globals()` are directly accessible as attributes.
+            ``locals()`` and ``globals()`` are directly accessible as attributes.
 
             :return: (bool) Return True for continuing training, False for stopping.
             """
@@ -89,28 +89,28 @@ You can find two examples of custom callbacks in the documentation: one for savi
 .. note::
   `self.num_timesteps` corresponds to the total number of steps taken in the environment, i.e., it is the number of environments multiplied by the number of time `env.step()` was called
 
-  You should know that `PPO1` and `TRPO` update `self.num_timesteps` after each rollout (and not each step) because they rely on MPI.
+  You should know that ``PPO1`` and ``TRPO`` update `self.num_timesteps` after each rollout (and not each step) because they rely on MPI.
 
-  For the other algorithms, `self.num_timesteps` is incremented by `n_envs` (number of environments) after each call to `env.step()`
+  For the other algorithms, `self.num_timesteps` is incremented by ``n_envs`` (number of environments) after each call to `env.step()`
 
 
 .. note::
 
-  For off-policy algorithms like SAC, DDPG, TD3 or DQN, the notion of `rollout` corresponds to the steps taken in the environment between two updates.
+  For off-policy algorithms like SAC, DDPG, TD3 or DQN, the notion of ``rollout`` corresponds to the steps taken in the environment between two updates.
 
 
 
 Event Callback
 --------------
 
-Compared to Keras, Stable Baselines provides a second type of `BaseCallback`, named `EventCallback` that is meant to trigger events. When an event is triggered, then a child callback is called.
+Compared to Keras, Stable Baselines provides a second type of ``BaseCallback``, named ``EventCallback`` that is meant to trigger events. When an event is triggered, then a child callback is called.
 
-As an example, `EvalCallback` is an `EventCallback` that will trigger its child callback when there is a new best model.
-A child callback is for instance `StopTrainingOnRewardThreshold` that stops the training if the mean reward achieved by the RL model is above a threshold.
+As an example, ``EvalCallback`` is an ``EventCallback`` that will trigger its child callback when there is a new best model.
+A child callback is for instance ``StopTrainingOnRewardThreshold`` that stops the training if the mean reward achieved by the RL model is above a threshold.
 
 .. note::
 
-	We recommend to take a look at the source code of `EvalCallback` and `StopTrainingOnRewardThreshold` to have a better overview of what can be achieved with this kind of callbacks.
+	We recommend to take a look at the source code of ``EvalCallback`` and ``StopTrainingOnRewardThreshold`` to have a better overview of what can be achieved with this kind of callbacks.
 
 
 .. code-block:: python
@@ -143,18 +143,18 @@ Callback Collection
 
 Stable Baselines provides you with a set of common callbacks for:
 
-- saving the model periodically (`CheckpointCallback`)
-- evaluating the model periodically and saving the best one (`EvalCallback`)
-- chaining callbacks (`CallbackList`)
-- triggering callback on events (`EventCallback`, `EveryNTimesteps`)
-- stopping the training early based on a reward threshold (`StopTrainingOnRewardThreshold`)
+- saving the model periodically (``CheckpointCallback``)
+- evaluating the model periodically and saving the best one (``EvalCallback``)
+- chaining callbacks (``CallbackList``)
+- triggering callback on events (``EventCallback``, ``EveryNTimesteps``)
+- stopping the training early based on a reward threshold (``StopTrainingOnRewardThreshold``)
 
 
 CheckpointCallback
 ^^^^^^^^^^^^^^^^^^
 
-Callback for saving a model every `save_freq` steps, you must specify a log folder (`save_path`)
-and optionally a prefix for the checkpoints (`rl_model` by default).
+Callback for saving a model every ``save_freq`` steps, you must specify a log folder (``save_path``)
+and optionally a prefix for the checkpoints (``rl_model`` by default).
 
 
 .. code-block:: python
@@ -173,12 +173,12 @@ EvalCallback
 ^^^^^^^^^^^^
 
 Evaluate periodically the performance of an agent, using a separate test environment.
-It will save the best model if `best_model_save_path` folder is specified and save the evaluations results in a numpy archive (`evaluations.npz`) if `log_path` folder is specified.
+It will save the best model if ``best_model_save_path`` folder is specified and save the evaluations results in a numpy archive (`evaluations.npz`) if ``log_path`` folder is specified.
 
 
 .. note::
 
-	You can pass a child callback via the `callback_on_new_best` argument. It will be triggered each time there is a new best model.
+	You can pass a child callback via the ``callback_on_new_best`` argument. It will be triggered each time there is a new best model.
 
 
 
@@ -204,7 +204,7 @@ CallbackList
 ^^^^^^^^^^^^
 
 Class for chaining callbacks, they will be called sequentially.
-Alternatively, you can pass directly a list of callbacks to the `learn()` method, it will be converted automatically to a `CallbackList`.
+Alternatively, you can pass directly a list of callbacks to the `learn()` method, it will be converted automatically to a ``CallbackList``.
 
 
 .. code-block:: python
@@ -232,7 +232,7 @@ StopTrainingOnRewardThreshold
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Stop the training once a threshold in episodic reward (mean episode reward over the evaluations) has been reached (i.e., when the model is good enough).
-It must be used with the `EvalCallback` and use the event triggered by a new best model.
+It must be used with the ``EvalCallback`` and use the event triggered by a new best model.
 
 
 .. code-block:: python
@@ -257,12 +257,12 @@ It must be used with the `EvalCallback` and use the event triggered by a new bes
 EveryNTimesteps
 ^^^^^^^^^^^^^^^
 
-An `EventCallback` that will trigger its child callback every `n_steps` timesteps.
+An ``EventCallback`` that will trigger its child callback every ``n_steps`` timesteps.
 
 
 .. note::
 
-	Because of the way `PPO1` and `TRPO` work (they rely on MPI), `n_steps` is a lower bound between two events.
+	Because of the way ``PPO1`` and ``TRPO`` work (they rely on MPI), ``n_steps`` is a lower bound between two events.
 
 
 .. code-block:: python
@@ -295,9 +295,9 @@ An `EventCallback` that will trigger its child callback every `n_steps` timestep
 
 
 
-  A callback function takes the `locals()` variables and the `globals()` variables from the model, then returns a boolean value for whether or not the training should continue.
+  A callback function takes the ``locals()`` variables and the ``globals()`` variables from the model, then returns a boolean value for whether or not the training should continue.
 
-  Thanks to the access to the models variables, in particular `_locals["self"]`, we are able to even change the parameters of the model without halting the training, or changing the model's code.
+  Thanks to the access to the models variables, in particular ``_locals["self"]``, we are able to even change the parameters of the model without halting the training, or changing the model's code.
 
 
   .. code-block:: python

@@ -47,7 +47,7 @@ In the following example, we will train, save and load a DQN model on the Lunar 
 
 
 .. note::
-  LunarLander requires the python package `box2d`.
+  LunarLander requires the python package ``box2d``.
   You can install it using ``apt install swig`` and then ``pip install box2d box2d-kengz``
 
 .. note::
@@ -186,12 +186,12 @@ If your callback returns False, training is aborted early.
 
   class SaveOnBestTrainingRewardCallback(BaseCallback):
       """
-      Callback for saving a model (the check is done every `check_freq` steps)
-      based on the training reward (in practice, we recommend using `EvalCallback`).
+      Callback for saving a model (the check is done every ``check_freq`` steps)
+      based on the training reward (in practice, we recommend using ``EvalCallback``).
 
       :param check_freq: (int)
       :param log_dir: (str) Path to the folder where the model will be saved.
-        It must contains the file created by the `Monitor` wrapper.
+        It must contains the file created by the ``Monitor`` wrapper.
       :param verbose: (int)
       """
       def __init__(self, check_freq: int, log_dir: str, verbose=1):
