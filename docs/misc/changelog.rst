@@ -45,6 +45,13 @@ Others:
 - Removed redundant return value from `a2c.utils::total_episode_reward_logger`. (@shwang)
 - Cleanup and refactoring in `common/identity_env.py` (@shwang)
 - Added a Makefile to simplify common development tasks (build the doc, type check, run the tests)
+- Removed unused code in `common/tf_util.py` (`calc_entropy_softmax`)
+- Refactoring:
+
+   - Algorithms no longer import from each other.
+   - `common` no longer import from algorithms.
+   - Moved shared code to new files `common/math_util.py`, `common/buffers.py` and `common/tf_layers.py`.
+   
 
 Documentation:
 ^^^^^^^^^^^^^^
