@@ -171,9 +171,34 @@ def q_explained_variance(q_pred, q_true):
     check_shape([var_y, var_pred], [[]] * 2)
     return 1.0 - (var_pred / var_y)
 
+
+# ================================================================
+# TF network blocks
+# ================================================================
+
+def mlp(input_ph, layers, activ_fn=tf.nn.relu, layer_norm=False):
+    """
+    Create a multi-layer fully connected neural network.
+
+    :param input_ph: (tf.placeholder)
+    :param layers: ([int]) Network architecture
+    :param activ_fn: (tf.function) Activation function
+    :param layer_norm: (bool) Whether to apply layer normalization or not
+    :return: (tf.Tensor)
+    """
+    output = input_ph
+    for i, layer_size in enumerate(layers):
+        output = tf.layers.dense(output, layer_size, name='fc' + str(i))
+        if layer_norm:
+            output = tf.contrib.layers.layer_norm(output, center=True, scale=True)
+        output = activ_fn(output)
+    return output
+
+
 # ================================================================
 # Global session
 # ================================================================
+
 
 def make_session(num_cpu=None, make_default=False, graph=None):
     """
@@ -244,6 +269,7 @@ def initialize(sess=None):
 # ================================================================
 # Theano-like Function
 # ================================================================
+
 
 def function(inputs, outputs, updates=None, givens=None):
     """
@@ -331,6 +357,7 @@ class _Function(object):
 # ================================================================
 # Flat vectors
 # ================================================================
+
 
 def var_shape(tensor):
     """
@@ -434,6 +461,7 @@ class GetFlat(object):
 # retrieving variables
 # ================================================================
 
+
 def get_trainable_vars(name):
     """
     returns the trainable variables
@@ -472,6 +500,7 @@ def outer_scope_getter(scope, new_scope=""):
 # ================================================================
 # Logging
 # ================================================================
+
 
 def total_episode_reward_logger(rew_acc, rewards, masks, writer, steps):
     """

@@ -15,7 +15,8 @@ from stable_baselines.common.policies import ActorCriticPolicy
 from stable_baselines.common.mpi_adam import MpiAdam
 from stable_baselines.common.mpi_moments import mpi_moments
 from stable_baselines.common.misc_util import flatten_lists
-from stable_baselines.trpo_mpi.utils import traj_segment_generator, add_vtarg_and_adv
+from stable_baselines.common.runners import traj_segment_generator
+from stable_baselines.trpo_mpi.utils import add_vtarg_and_adv
 
 
 
