@@ -11,7 +11,24 @@ from stable_baselines.common.runners import AbstractEnvRunner
 from stable_baselines.common.schedules import Scheduler
 from stable_baselines.common.tf_util import mse, total_episode_reward_logger
 from stable_baselines.common.math_util import safe_mean
-from stable_baselines.a2c.utils import discount_with_dones
+
+
+def discount_with_dones(rewards, dones, gamma):
+    """
+    Apply the discount value to the reward, where the environment is not done
+
+    :param rewards: ([float]) The rewards
+    :param dones: ([bool]) Whether an environment is done or not
+    :param gamma: (float) The discount value
+    :return: ([float]) The discounted rewards
+    """
+    discounted = []
+    ret = 0  # Return: discounted reward
+    for reward, done in zip(rewards[::-1], dones[::-1]):
+        ret = reward + gamma * ret * (1. - done)  # fixed off by one bug
+        discounted.append(ret)
+    return discounted[::-1]
+
 
 class A2C(ActorCriticRLModel):
     """
