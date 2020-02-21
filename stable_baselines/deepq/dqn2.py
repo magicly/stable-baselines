@@ -94,6 +94,7 @@ class DQN(OffPolicyRLModel):
                                   seed=seed,
                                   n_cpu_tf_sess=n_cpu_tf_sess)
 
+        self.episode_rewards = [0.0]
         self.param_noise = param_noise
         self.learning_starts = learning_starts
         self.train_freq = train_freq
@@ -179,6 +180,8 @@ class DQN(OffPolicyRLModel):
                 self.summary = tf.summary.merge_all()
 
     def learn(self,
+              replay_buffer,
+              env_info,
               total_timesteps,
               callback=None,
               log_interval=100,
@@ -212,6 +215,8 @@ class DQN(OffPolicyRLModel):
                 assert not self.prioritized_replay, "Prioritized replay buffer is not supported by HER"
                 self.replay_buffer = replay_wrapper(self.replay_buffer)
 
+            self.replay_buffer = replay_buffer
+
             # Create the schedule for exploration starting from 1.
             self.exploration = LinearSchedule(
                 schedule_timesteps=int(self.exploration_fraction *
@@ -219,12 +224,11 @@ class DQN(OffPolicyRLModel):
                 initial_p=self.exploration_initial_eps,
                 final_p=self.exploration_final_eps)
 
-            episode_rewards = [0.0]
+            episode_rewards = self.episode_rewards
             episode_successes = []
-            obs = self.env.reset()
-            reset = True
+            obs, rew, done, info, reset = env_info
 
-            for _ in range(total_timesteps):
+            for _ in range(1):
                 if callback is not None:
                     # Only stop training if return value is False, not when it is None. This is for backwards
                     # compatibility with callbacks that have no return statement.
@@ -253,11 +257,6 @@ class DQN(OffPolicyRLModel):
                                       update_eps=update_eps,
                                       **kwargs)[0]
                 env_action = action
-                reset = False
-                new_obs, rew, done, info = self.env.step(env_action)
-                # Store transition in the replay buffer.
-                self.replay_buffer.add(obs, action, rew, new_obs, float(done))
-                obs = new_obs
 
                 if writer is not None:
                     ep_rew = np.array([rew]).reshape((1, -1))
@@ -374,7 +373,7 @@ class DQN(OffPolicyRLModel):
 
                 self.num_timesteps += 1
 
-        return self
+        return env_action
 
     def predict(self, observation, state=None, mask=None, deterministic=True):
         observation = np.array(observation)
